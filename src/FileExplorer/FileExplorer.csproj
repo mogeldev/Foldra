@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>FileExplorer</RootNamespace>
+    <AssemblyName>Foldra</AssemblyName>
+    <Product>Foldra</Product>
+    <AssemblyTitle>Foldra</AssemblyTitle>
+    <Version>0.1.0-alpha</Version>
+    <Copyright>Copyright (C) 2026 mogeldev. Licensed under GPL-3.0.</Copyright>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\Foldra.ico</ApplicationIcon>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Foldra.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.OleDb" Version="9.0.20" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,204 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+        Colour ribbon icons, drawn as vectors in a 32x32 box so they stay sharp at every DPI
+        and in both themes. Windows 10 ships its own bitmaps inside imageres.dll, which are
+        not redistributable, so these are rebuilt from the same flat shapes and palette.
+    -->
+
+    <!-- Paste: clipboard with a sheet on top. -->
+    <DrawingImage x:Key="IconPaste">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="#C8A165">
+                    <GeometryDrawing.Pen><Pen Brush="#8A6D3B" Thickness="1" /></GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="5,5,20,24" RadiusX="2" RadiusY="2" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="#9E9E9E">
+                    <GeometryDrawing.Pen><Pen Brush="#6E6E6E" Thickness="1" /></GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="10,2,10,6" RadiusX="1" RadiusY="1" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="#FFFFFF">
+                    <GeometryDrawing.Pen><Pen Brush="#2B6CB0" Thickness="1" /></GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="12,12,16,18" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="#2B6CB0"
+                                 Geometry="M 15,17 H 25 V 18.5 H 15 Z M 15,21 H 25 V 22.5 H 15 Z M 15,25 H 22 V 26.5 H 15 Z" />
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Cut: scissors. -->
+    <DrawingImage x:Key="IconCut">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Geometry="M 10,3 L 21,23 M 22,3 L 11,23">
+                    <GeometryDrawing.Pen><Pen Brush="#6E6E6E" Thickness="2.5" /></GeometryDrawing.Pen>
+                </GeometryDrawing>
+                <GeometryDrawing>
+                    <GeometryDrawing.Pen><Pen Brush="#2B6CB0" Thickness="2" /></GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <EllipseGeometry Center="9,26" RadiusX="4" RadiusY="4" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing>
+                    <GeometryDrawing.Pen><Pen Brush="#2B6CB0" Thickness="2" /></GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <EllipseGeometry Center="23,26" RadiusX="4" RadiusY="4" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Copy: two sheets. -->
+    <DrawingImage x:Key="IconCopy">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="#FFFFFF">
+                    <GeometryDrawing.Pen><Pen Brush="#7FA8D9" Thickness="1" /></GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="5,3,16,20" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="#FFFFFF">
+                    <GeometryDrawing.Pen><Pen Brush="#2B6CB0" Thickness="1" /></GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="11,9,16,20" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="#2B6CB0"
+                                 Geometry="M 14,14 H 24 V 15.5 H 14 Z M 14,18 H 24 V 19.5 H 14 Z M 14,22 H 21 V 23.5 H 14 Z" />
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Copy path: chain link. -->
+    <DrawingImage x:Key="IconLink">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing>
+                    <GeometryDrawing.Pen><Pen Brush="#2B6CB0" Thickness="2.5" /></GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="3,12,15,8" RadiusX="4" RadiusY="4" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing>
+                    <GeometryDrawing.Pen><Pen Brush="#2B6CB0" Thickness="2.5" /></GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="14,12,15,8" RadiusX="4" RadiusY="4" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="#FFFFFF" Geometry="M 14.5,14 H 17.5 V 18 H 14.5 Z" />
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Delete: the red cross Explorer puts on the delete command. -->
+    <DrawingImage x:Key="IconDelete">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Geometry="M 7,7 L 25,25 M 25,7 L 7,25">
+                    <GeometryDrawing.Pen><Pen Brush="#D13438" Thickness="4" StartLineCap="Square" EndLineCap="Square" /></GeometryDrawing.Pen>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Rename: sheet with a pencil. -->
+    <DrawingImage x:Key="IconRename">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="#FFFFFF">
+                    <GeometryDrawing.Pen><Pen Brush="#7FA8D9" Thickness="1" /></GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="4,3,16,22" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="#2B6CB0"
+                                 Geometry="M 7,8 H 17 V 9.5 H 7 Z M 7,12 H 17 V 13.5 H 7 Z M 7,16 H 13 V 17.5 H 7 Z" />
+                <GeometryDrawing Brush="#F2C14E" Geometry="M 17,26 L 19,20 L 28,11 L 30,13 L 21,22 Z">
+                    <GeometryDrawing.Pen><Pen Brush="#B58B24" Thickness="1" /></GeometryDrawing.Pen>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Folder, in the yellow the shell uses. -->
+    <DrawingImage x:Key="IconFolder">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="#FFCC4D" Geometry="M 2,7 L 12,7 L 15,10 L 30,10 L 30,26 L 2,26 Z">
+                    <GeometryDrawing.Pen><Pen Brush="#E0A526" Thickness="1" /></GeometryDrawing.Pen>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- New folder: folder with the green plus badge. -->
+    <DrawingImage x:Key="IconNewFolder">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="#FFCC4D" Geometry="M 2,7 L 12,7 L 15,10 L 30,10 L 30,26 L 2,26 Z">
+                    <GeometryDrawing.Pen><Pen Brush="#E0A526" Thickness="1" /></GeometryDrawing.Pen>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="#10893E">
+                    <GeometryDrawing.Geometry>
+                        <EllipseGeometry Center="24,22" RadiusX="7" RadiusY="7" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="#FFFFFF" Geometry="M 23,18 H 25 V 21 H 28 V 23 H 25 V 26 H 23 V 23 H 20 V 21 H 23 Z" />
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Terminal: console window. -->
+    <DrawingImage x:Key="IconTerminal">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="#0C0C0C">
+                    <GeometryDrawing.Pen><Pen Brush="#5A5A5A" Thickness="1" /></GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="3,6,26,20" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Geometry="M 7,12 L 12,16 L 7,20">
+                    <GeometryDrawing.Pen><Pen Brush="#CCCCCC" Thickness="1.8" /></GeometryDrawing.Pen>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="#CCCCCC" Geometry="M 14,20 H 23 V 21.6 H 14 Z" />
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Favoriten: star. -->
+    <DrawingImage x:Key="IconStar">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="#FFB900"
+                                 Geometry="M 16,3 L 20,12 L 30,13 L 22.5,19.5 L 25,29 L 16,24 L 7,29 L 9.5,19.5 L 2,13 L 12,12 Z">
+                    <GeometryDrawing.Pen><Pen Brush="#D89B00" Thickness="1" /></GeometryDrawing.Pen>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Aktualisieren: circular arrow. -->
+    <DrawingImage x:Key="IconRefresh">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Geometry="M 27,16 A 11,11 0 1 1 16,5">
+                    <GeometryDrawing.Pen><Pen Brush="#2B6CB0" Thickness="3" /></GeometryDrawing.Pen>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="#2B6CB0" Geometry="M 12,1 L 20,5 L 12,9 Z" />
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+</ResourceDictionary>

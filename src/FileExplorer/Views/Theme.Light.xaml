@@ -1,0 +1,32 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+        Windows 10 Explorer, light. The values are the ones the shell itself uses:
+        #E5F3FF/#CCE8FF for hover, #CCE8FF/#99D1FF for selection, #F0F0F0 for the chrome
+        around the content and #2B579A for the blue "File" ribbon tab.
+    -->
+
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="ChromeBackgroundBrush" Color="#F0F0F0" />
+    <SolidColorBrush x:Key="ControlBackgroundBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="LineBrush" Color="#DFDFDF" />
+    <SolidColorBrush x:Key="ControlBorderBrush" Color="#ABADB3" />
+
+    <SolidColorBrush x:Key="TextBrush" Color="#000000" />
+    <SolidColorBrush x:Key="SecondaryTextBrush" Color="#4D4D4D" />
+    <SolidColorBrush x:Key="DisabledTextBrush" Color="#A0A0A0" />
+
+    <SolidColorBrush x:Key="HoverBrush" Color="#E5F3FF" />
+    <SolidColorBrush x:Key="HoverBorderBrush" Color="#CCE8FF" />
+    <SolidColorBrush x:Key="SelectedBrush" Color="#CCE8FF" />
+    <SolidColorBrush x:Key="SelectedBorderBrush" Color="#99D1FF" />
+    <SolidColorBrush x:Key="PressedBrush" Color="#CCE8FF" />
+
+    <SolidColorBrush x:Key="FileTabBrush" Color="#2B579A" />
+    <SolidColorBrush x:Key="FileTabHoverBrush" Color="#204073" />
+    <SolidColorBrush x:Key="FileTabTextBrush" Color="#FFFFFF" />
+
+    <SolidColorBrush x:Key="ProgressBrush" Color="#06B025" />
+
+</ResourceDictionary>

@@ -1,0 +1,475 @@
+<Window x:Class="FileExplorer.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:FileExplorer.ViewModels"
+        xmlns:views="clr-namespace:FileExplorer.Views"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
+        Title="Foldra"
+        Icon="/Assets/Foldra.ico"
+        Width="1180" Height="760"
+        MinWidth="760" MinHeight="480"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="Segoe UI" FontSize="12"
+        UseLayoutRounding="True"
+        TextOptions.TextFormattingMode="Display"
+        Background="{DynamicResource WindowBackgroundBrush}"
+        Foreground="{DynamicResource TextBrush}">
+
+    <!--
+        The window keeps the system title bar and border: that is what makes it read as a
+        Windows 10 window. Everything below it follows Explorer's own layout - tab strip,
+        ribbon, address bar, navigation pane, list, status bar.
+    -->
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- ========================== Tab strip ========================== -->
+        <Border Grid.Row="0" Background="{DynamicResource ChromeBackgroundBrush}" Padding="4,4,4,0">
+            <StackPanel Orientation="Horizontal">
+                <ListBox x:Name="TabStrip"
+                         Style="{StaticResource TabStripStyle}"
+                         ItemContainerStyle="{StaticResource TabStripItemStyle}"
+                         ItemsSource="{Binding Tabs}"
+                         SelectedItem="{Binding SelectedTab, Mode=TwoWay}"
+                         AllowDrop="True"
+                         PreviewMouseDown="OnTabStripMouseDown"
+                         PreviewMouseMove="OnTabStripMouseMove"
+                         DragOver="OnTabStripDragOver"
+                         Drop="OnTabStripDrop">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type vm:ExplorerTabViewModel}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Header}" VerticalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis" />
+                                <Button Grid.Column="1" Width="18" Height="18" Margin="8,0,0,0"
+                                        Style="{StaticResource FlatButtonStyle}" Padding="0"
+                                        FontFamily="{StaticResource IconFont}" FontSize="9"
+                                        Content="&#xE711;"
+                                        HorizontalContentAlignment="Center"
+                                        ToolTip="Close tab (Ctrl+W)"
+                                        AutomationProperties.Name="Close tab"
+                                        Click="OnCloseTabClick" Tag="{Binding}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <Button Width="26" Height="26" Margin="4,0,0,0"
+                        Style="{StaticResource FlatButtonStyle}" Padding="0"
+                        FontFamily="{StaticResource IconFont}" FontSize="11"
+                        Content="&#xE710;" HorizontalContentAlignment="Center"
+                        ToolTip="New tab (Ctrl+T)" Click="OnNewTabClick" />
+            </StackPanel>
+        </Border>
+
+        <!-- ============================ Ribbon =========================== -->
+        <Grid Grid.Row="1">
+            <TabControl x:Name="Ribbon" Style="{StaticResource RibbonTabControlStyle}"
+                        ItemContainerStyle="{StaticResource RibbonTabItemStyle}"
+                        Padding="0">
+                <TabItem Header="Home">
+                    <StackPanel Orientation="Horizontal" Height="104">
+
+                        <!-- Clipboard -->
+                        <StackPanel Margin="6,4,2,0">
+                            <StackPanel Orientation="Horizontal">
+                                <Button Style="{StaticResource RibbonBigButtonStyle}" Click="OnPasteClick"
+                                        ToolTip="Paste (Ctrl+V)">
+                                    <StackPanel>
+                                        <Image Source="{StaticResource IconPaste}" Width="32" Height="32" Margin="0,2,0,4" />
+                                        <TextBlock Text="Paste" TextAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
+
+                                <StackPanel Width="140" Margin="4,2,0,0">
+                                    <Button Style="{StaticResource RibbonSmallButtonStyle}" Click="OnCutClick"
+                                            ToolTip="Cut (Ctrl+X)">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="{StaticResource IconCut}" Width="16" Height="16" Margin="0,0,6,0" />
+                                            <TextBlock Text="Cut" />
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Style="{StaticResource RibbonSmallButtonStyle}" Click="OnCopyClick"
+                                            ToolTip="Copy (Ctrl+C)">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="{StaticResource IconCopy}" Width="16" Height="16" Margin="0,0,6,0" />
+                                            <TextBlock Text="Copy" />
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Style="{StaticResource RibbonSmallButtonStyle}" Click="OnCopyPathClick"
+                                            ToolTip="Copy the path of the selection">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="{StaticResource IconLink}" Width="16" Height="16" Margin="0,0,6,0" />
+                                            <TextBlock Text="Copy path" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                            <TextBlock Text="Clipboard" Style="{StaticResource RibbonGroupLabelStyle}" />
+                        </StackPanel>
+
+                        <Border Style="{StaticResource RibbonGroupSeparatorStyle}" />
+
+                        <!-- Organize -->
+                        <StackPanel Margin="2,4,2,0">
+                            <StackPanel Orientation="Horizontal">
+                                <Button Style="{StaticResource RibbonBigButtonStyle}" Click="OnDeleteClick"
+                                        ToolTip="Delete (Del, Shift+Del deletes permanently)">
+                                    <StackPanel>
+                                        <Image Source="{StaticResource IconDelete}" Width="32" Height="32" Margin="0,2,0,4" />
+                                        <TextBlock Text="Delete" TextAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource RibbonBigButtonStyle}" Click="OnRenameClick"
+                                        ToolTip="Rename (F2)">
+                                    <StackPanel>
+                                        <Image Source="{StaticResource IconRename}" Width="32" Height="32" Margin="0,2,0,4" />
+                                        <TextBlock Text="Rename" TextAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                            <TextBlock Text="Organize" Style="{StaticResource RibbonGroupLabelStyle}" />
+                        </StackPanel>
+
+                        <Border Style="{StaticResource RibbonGroupSeparatorStyle}" />
+
+                        <!-- New -->
+                        <StackPanel Margin="2,4,2,0">
+                            <Button Style="{StaticResource RibbonBigButtonStyle}" Click="OnNewFolderClick"
+                                    ToolTip="New folder (Ctrl+Shift+N)">
+                                <StackPanel>
+                                    <Image Source="{StaticResource IconNewFolder}" Width="32" Height="32" Margin="0,2,0,4" />
+                                    <TextBlock Text="New&#x0a;folder" TextAlignment="Center" />
+                                </StackPanel>
+                            </Button>
+                            <TextBlock Text="New" Style="{StaticResource RibbonGroupLabelStyle}" />
+                        </StackPanel>
+
+                        <Border Style="{StaticResource RibbonGroupSeparatorStyle}" />
+
+                        <!-- Open -->
+                        <StackPanel Margin="2,4,2,0">
+                            <StackPanel Width="190" Margin="0,6,0,0">
+                                <Button Style="{StaticResource RibbonSmallButtonStyle}" Click="OnOpenInExplorerClick">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource IconFolder}" Width="16" Height="16" Margin="0,0,6,0" />
+                                        <TextBlock Text="Open in File Explorer" />
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource RibbonSmallButtonStyle}" Click="OnOpenTerminalClick">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource IconTerminal}" Width="16" Height="16" Margin="0,0,6,0" />
+                                        <TextBlock Text="Open terminal here" />
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                            <TextBlock Text="Open" Style="{StaticResource RibbonGroupLabelStyle}" />
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="Share">
+                    <StackPanel Orientation="Horizontal" Height="104">
+                        <StackPanel Margin="6,4,2,0">
+                            <StackPanel Width="200" Margin="0,6,0,0">
+                                <Button Style="{StaticResource RibbonSmallButtonStyle}" Click="OnAddFavoriteClick">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource IconStar}" Width="16" Height="16" Margin="0,0,6,0" />
+                                        <TextBlock Text="Pin to Quick access (Ctrl+D)" />
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource RibbonSmallButtonStyle}" Click="OnCopyPathClick">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource IconLink}" Width="16" Height="16" Margin="0,0,6,0" />
+                                        <TextBlock Text="Copy path" />
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                            <TextBlock Text="Send" Style="{StaticResource RibbonGroupLabelStyle}" />
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="View">
+                    <StackPanel Orientation="Horizontal" Height="104">
+
+                        <!-- Layout -->
+                        <StackPanel Margin="6,4,2,0">
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Width="160" Margin="0,2,0,0">
+                                    <Button Style="{StaticResource RibbonSmallButtonStyle}" Tag="ExtraLargeIcons"
+                                            Click="OnViewModeClick" Content="Extra large icons" />
+                                    <Button Style="{StaticResource RibbonSmallButtonStyle}" Tag="LargeIcons"
+                                            Click="OnViewModeClick" Content="Large icons" />
+                                    <Button Style="{StaticResource RibbonSmallButtonStyle}" Tag="MediumIcons"
+                                            Click="OnViewModeClick" Content="Medium icons" />
+                                </StackPanel>
+                                <StackPanel Width="120" Margin="2,2,0,0">
+                                    <Button Style="{StaticResource RibbonSmallButtonStyle}" Tag="Tiles"
+                                            Click="OnViewModeClick" Content="Tiles" />
+                                    <Button Style="{StaticResource RibbonSmallButtonStyle}" Tag="List"
+                                            Click="OnViewModeClick" Content="List" />
+                                    <Button Style="{StaticResource RibbonSmallButtonStyle}" Tag="Details"
+                                            Click="OnViewModeClick" Content="Details" />
+                                </StackPanel>
+                            </StackPanel>
+                            <TextBlock Text="Layout" Style="{StaticResource RibbonGroupLabelStyle}" />
+                        </StackPanel>
+
+                        <Border Style="{StaticResource RibbonGroupSeparatorStyle}" />
+
+                        <!-- Sort -->
+                        <StackPanel Margin="2,4,2,0">
+                            <StackPanel Width="140" Margin="0,2,0,0">
+                                <Button Style="{StaticResource RibbonSmallButtonStyle}" Tag="Name"
+                                        Click="OnSortClick" Content="Name" />
+                                <Button Style="{StaticResource RibbonSmallButtonStyle}" Tag="Modified"
+                                        Click="OnSortClick" Content="Date modified" />
+                                <Button Style="{StaticResource RibbonSmallButtonStyle}" Tag="Type"
+                                        Click="OnSortClick" Content="Type" />
+                                <Button Style="{StaticResource RibbonSmallButtonStyle}" Tag="Size"
+                                        Click="OnSortClick" Content="Size" />
+                            </StackPanel>
+                            <TextBlock Text="Sort by" Style="{StaticResource RibbonGroupLabelStyle}" />
+                        </StackPanel>
+
+                        <Border Style="{StaticResource RibbonGroupSeparatorStyle}" />
+
+                        <!-- Ein-/ausblenden -->
+                        <StackPanel Margin="2,4,2,0">
+                            <StackPanel Width="190" Margin="0,8,0,0">
+                                <CheckBox Style="{StaticResource RibbonCheckBoxStyle}"
+                                          Content="Hidden items"
+                                          IsChecked="{Binding Settings.ShowHiddenItems, Mode=TwoWay}" />
+                                <Button Style="{StaticResource RibbonSmallButtonStyle}" Click="OnRefreshClick">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource IconRefresh}" Width="16" Height="16" Margin="0,0,6,0" />
+                                        <TextBlock Text="Refresh (F5)" />
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                            <TextBlock Text="Show/hide" Style="{StaticResource RibbonGroupLabelStyle}" />
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+
+            <!-- The blue "File" tab sits in front of the ribbon's header row. -->
+            <Button x:Name="FileTabButton" Style="{StaticResource FileTabButtonStyle}"
+                    Content="File" HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Click="OnFileTabClick">
+                <Button.ContextMenu>
+                    <ContextMenu x:Name="FileMenu">
+                        <MenuItem Header="New tab" Click="OnNewTabClick" />
+                        <MenuItem Header="Open in File Explorer" Click="OnOpenInExplorerClick" />
+                        <MenuItem Header="Open terminal here" Click="OnOpenTerminalClick" />
+                        <Separator />
+                        <MenuItem Header="Close window" Click="OnCloseWindowClick" />
+                    </ContextMenu>
+                </Button.ContextMenu>
+            </Button>
+        </Grid>
+
+        <!-- ====================== Address + search ======================= -->
+        <Border Grid.Row="2" Background="{DynamicResource WindowBackgroundBrush}" Padding="6,5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="260" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,6,0">
+                    <Button Style="{StaticResource ToolbarIconButtonStyle}" Content="&#xE72B;"
+                            ToolTip="Back (Alt+Left)" Click="OnBackClick"
+                            IsEnabled="{Binding SelectedTab.CanGoBack}" />
+                    <Button Style="{StaticResource ToolbarIconButtonStyle}" Content="&#xE72A;"
+                            ToolTip="Forward (Alt+Right)" Click="OnForwardClick"
+                            IsEnabled="{Binding SelectedTab.CanGoForward}" />
+                    <Button Style="{StaticResource ToolbarIconButtonStyle}" Content="&#xE74A;" Margin="2,0,0,0"
+                            ToolTip="Up (Alt+Up)" Click="OnUpClick"
+                            IsEnabled="{Binding SelectedTab.CanGoUp}" />
+                </StackPanel>
+
+                <!-- Address bar: breadcrumb, switching to a plain edit box on click. -->
+                <Border Grid.Column="1" Style="{StaticResource FieldBorderStyle}" Height="24">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0">
+                            <ScrollViewer x:Name="BreadcrumbHost" HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Disabled"
+                                          MouseLeftButtonUp="OnBreadcrumbHostClick">
+                                <ItemsControl ItemsSource="{Binding SelectedTab.Breadcrumbs}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type vm:Breadcrumb}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Style="{StaticResource BreadcrumbButtonStyle}"
+                                                        Content="{Binding Name}" Tag="{Binding Path}"
+                                                        Click="OnBreadcrumbClick" />
+                                                <TextBlock Text="&#xE76C;" FontFamily="{StaticResource IconFont}"
+                                                           FontSize="8" VerticalAlignment="Center" Margin="0,1,2,0"
+                                                           Foreground="{DynamicResource SecondaryTextBrush}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+
+                            <TextBox x:Name="AddressBox" Visibility="Collapsed"
+                                     Style="{StaticResource PlainTextBoxStyle}"
+                                     Text="{Binding SelectedTab.AddressText, UpdateSourceTrigger=PropertyChanged}"
+                                     KeyDown="OnAddressBoxKeyDown" LostFocus="OnAddressBoxLostFocus" />
+
+                            <!-- Explorer paints the loading progress into the address bar. -->
+                            <ProgressBar IsIndeterminate="True" Height="3" VerticalAlignment="Bottom"
+                                         Background="Transparent" BorderThickness="0"
+                                         Foreground="{DynamicResource ProgressBrush}"
+                                         Visibility="{Binding SelectedTab.IsLoading, Converter={StaticResource BoolToVisibility}}" />
+                        </Grid>
+
+                        <Button Grid.Column="1" Style="{StaticResource ToolbarIconButtonStyle}"
+                                Height="22" Width="22" Content="&#xE72C;" FontSize="11"
+                                ToolTip="Refresh (F5)" Click="OnRefreshClick" />
+                    </Grid>
+                </Border>
+
+                <!-- Search box with the placeholder Explorer shows inside the field. -->
+                <Border Grid.Column="2" Style="{StaticResource FieldBorderStyle}" Height="24" Margin="6,0,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox x:Name="SearchBox" Grid.Column="0"
+                                 Style="{StaticResource PlainTextBoxStyle}"
+                                 Text="{Binding SelectedTab.SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                                 KeyDown="OnSearchKeyDown" />
+
+                        <TextBlock Grid.Column="0" Text="Search" Margin="6,0,0,0" IsHitTestVisible="False"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource DisabledTextBrush}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <TextBlock Grid.Column="1" Text="&#xE721;" FontFamily="{StaticResource IconFont}"
+                                   FontSize="12" VerticalAlignment="Center" Margin="4,0,6,0"
+                                   Foreground="{DynamicResource SecondaryTextBrush}" />
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- ===================== Navigation + content ==================== -->
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="NavigationColumn" Width="240" MinWidth="160" MaxWidth="480" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="{DynamicResource WindowBackgroundBrush}"
+                    BorderBrush="{DynamicResource LineBrush}" BorderThickness="0,1,0,0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock Text="Quick access" Style="{StaticResource SidebarSectionHeaderStyle}" />
+                        <ItemsControl ItemsSource="{Binding Favorites}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:NavigationNodeViewModel}">
+                                    <Button Style="{StaticResource FavoriteButtonStyle}"
+                                            Tag="{Binding Path}" Click="OnFavoriteClick"
+                                            MouseRightButtonUp="OnFavoriteRightClick"
+                                            PreviewMouseDown="OnFavoriteMouseDown">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="{Binding Icon}" Width="16" Height="16" Margin="0,0,6,0" />
+                                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock Text="Folders" Style="{StaticResource SidebarSectionHeaderStyle}" />
+                        <TreeView x:Name="FolderTree" ItemsSource="{Binding TreeRoots}"
+                                  Background="Transparent" BorderThickness="0"
+                                  ItemContainerStyle="{StaticResource NavigationTreeItemStyle}"
+                                  SelectedItemChanged="OnTreeSelectionChanged"
+                                  PreviewMouseDown="OnTreeMouseDown"
+                                  PreviewMouseLeftButtonUp="OnTreeMouseUp">
+                            <TreeView.ItemTemplate>
+                                <HierarchicalDataTemplate DataType="{x:Type vm:NavigationNodeViewModel}"
+                                                          ItemsSource="{Binding Children}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{Binding Icon}" Width="16" Height="16" Margin="0,0,6,0" />
+                                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <GridSplitter Grid.Column="1" Width="1" HorizontalAlignment="Stretch"
+                          Background="{DynamicResource LineBrush}" />
+
+            <Border Grid.Column="2" Background="{DynamicResource WindowBackgroundBrush}"
+                    BorderBrush="{DynamicResource LineBrush}" BorderThickness="0,1,0,0">
+                <ContentControl Content="{Binding SelectedTab}">
+                    <ContentControl.ContentTemplate>
+                        <DataTemplate DataType="{x:Type vm:ExplorerTabViewModel}">
+                            <views:ExplorerView />
+                        </DataTemplate>
+                    </ContentControl.ContentTemplate>
+                </ContentControl>
+            </Border>
+        </Grid>
+
+        <!-- ========================== Status bar ========================= -->
+        <Border Grid.Row="4" Padding="8,2" Background="{DynamicResource ChromeBackgroundBrush}"
+                BorderBrush="{DynamicResource LineBrush}" BorderThickness="0,1,0,0">
+            <Grid>
+                <TextBlock Text="{Binding SelectedTab.StatusText}" VerticalAlignment="Center"
+                           Foreground="{DynamicResource SecondaryTextBrush}" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource StatusBarButtonStyle}" Content="&#xE8FD;"
+                            ToolTip="Details" Tag="Details" Click="OnViewModeClick" />
+                    <Button Style="{StaticResource StatusBarButtonStyle}" Content="&#xE71D;"
+                            ToolTip="Large icons" Tag="LargeIcons" Click="OnViewModeClick" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

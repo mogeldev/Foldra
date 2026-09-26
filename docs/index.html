@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Foldra — tabbed file explorer for Windows</title>
+<meta name="description" content="Foldra is a free, open-source tabbed file explorer for Windows 10 and 11. Built on WPF, powered by the Windows shell.">
+<link rel="canonical" href="https://mogeldev.github.io/Foldra/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Foldra">
+<meta property="og:url" content="https://mogeldev.github.io/Foldra/">
+<meta property="og:title" content="Foldra — tabbed file explorer for Windows">
+<meta property="og:description" content="Free, open-source tabbed file explorer for Windows 10 and 11.">
+<meta property="og:image" content="https://mogeldev.github.io/Foldra/screenshot.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --bg: #0f1115;
+    --fg: #e8e8e8;
+    --muted: #9aa0a6;
+    --accent: #6ee7b7;
+    --border: #2a2e35;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #fafafa;
+      --fg: #1a1a1a;
+      --muted: #5f6368;
+      --accent: #0f9d58;
+      --border: #e2e2e2;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+  main {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 3rem;
+    line-height: 1.6;
+  }
+  h1 {
+    font-size: 1.75rem;
+    margin: 0 0 0.25rem;
+  }
+  .prompt {
+    color: var(--accent);
+  }
+  .tagline {
+    color: var(--muted);
+    margin: 0 0 2.5rem;
+    font-size: 0.95rem;
+  }
+  p {
+    margin: 0 0 1.25rem;
+  }
+  h2 {
+    font-size: 1.05rem;
+    font-weight: normal;
+    margin: 3rem 0 1.25rem;
+  }
+  .download {
+    display: inline-block;
+    margin: 0.5rem 0 0.75rem;
+    padding: 0.7rem 1.4rem;
+    border-radius: 6px;
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: bold;
+  }
+  .download:hover {
+    text-decoration: none;
+    filter: brightness(1.08);
+  }
+  .note {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  figure {
+    margin: 2.5rem 0 0;
+  }
+  figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  .posts {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .posts li {
+    margin-bottom: 1.25rem;
+  }
+  .posts .desc {
+    display: block;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  code {
+    font-family: inherit;
+    color: var(--fg);
+  }
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1><span class="prompt">$</span> foldra</h1>
+  <p class="tagline">tabbed file explorer for Windows 10 &amp; 11</p>
+
+  <p>A lightweight file explorer with tabs that leaves the heavy lifting to Windows itself:
+    the real shell context menu, the native copy and delete dialogs, system icons,
+    thumbnails and Windows Search. Free and open source.</p>
+
+  <a class="download" href="https://github.com/mogeldev/Foldra/releases/download/v0.1.0-alpha/Foldra.exe">&darr; Download Foldra 0.1 Alpha</a>
+  <p class="note">Windows 10/11 x64 &middot; single .exe, ~60 MB &middot; no installation, no .NET needed &middot;
+    <a href="https://github.com/mogeldev/Foldra/releases">all releases</a></p>
+
+  <figure>
+    <img src="screenshot.png" width="1119" height="660" alt="Foldra in dark mode: tab strip, ribbon with Paste, Cut, Copy, Delete and Rename, Quick access and folder tree on the left.">
+  </figure>
+
+  <h2><span class="prompt">$</span> foldra --features</h2>
+  <ul class="posts">
+    <li>tabs
+      <span class="desc">Ctrl+T, Ctrl+W, drag to reorder, middle-click a folder to open it in a new tab. Your tabs come back on the next start.</span></li>
+    <li>real shell integration
+      <span class="desc">The full Windows context menu (7-Zip, Git, "Open with" …) and the native progress, conflict and recycle bin dialogs.</span></li>
+    <li>fast search
+      <span class="desc">Uses the Windows Search index where available, with a file system fallback.</span></li>
+    <li>follows your system
+      <span class="desc">Light or dark mode and your accent color, switched live. Native window frame on Windows 10 and 11.</span></li>
+    <li>works with Explorer
+      <span class="desc">Copy and paste in both directions between Foldra and File Explorer.</span></li>
+  </ul>
+
+  <h2><span class="prompt">$</span> foldra --notes</h2>
+  <p>This is an <strong>alpha</strong>: expect rough edges, and please
+    <a href="https://github.com/mogeldev/Foldra/issues">report bugs</a>.</p>
+  <p class="note">The .exe is not code-signed yet, so Windows SmartScreen may warn on first launch.
+    Choose <code>More info</code> &rarr; <code>Run anyway</code> to start it.</p>
+
+  <footer>
+    <span>&copy; 2026 <a href="https://mogeldev.github.io/">mogeldev</a> &middot; GPL-3.0</span>
+    <span><a href="https://github.com/mogeldev/Foldra">source on GitHub</a></span>
+  </footer>
+</main>
+</body>
+</html>
